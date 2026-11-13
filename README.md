@@ -19,7 +19,7 @@
 
 ## 🚀 Live Demo
 
-Check out : [Blog Application](https://post-blogspace.vercel.app/)
+Check out : [Inkora Blog Application](https://inkora-blogs.vercel.app/)
 
 > The deployed demo reflects the V1 interface. Run the project locally to see Inkora V2.
 
@@ -64,7 +64,7 @@ Check out : [Blog Application](https://post-blogspace.vercel.app/)
 ## 📁 Project Structure
 
 ```
-Blog-Web_Application-Project/
+Inkora-Blogs-Application/
 ├── index.js                 # Server, routes, post model and template helpers
 ├── package.json             # Metadata, scripts and dependencies
 ├── package-lock.json        # Dependency lock file
@@ -98,8 +98,8 @@ Blog-Web_Application-Project/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/razazaheer12/Blog-Web_Application-Project.git
-   cd Blog-Web_Application-Project
+   git clone https://github.com/razazaheer12/Inkora-Blogs-Application.git
+   cd Inkora-Blogs-Application
    ```
 
 2. **Install dependencies**
