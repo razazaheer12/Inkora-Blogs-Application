@@ -12,7 +12,7 @@
 <p align="center">
   <strong>Inkora</strong> is a local-first personal blog built with <strong>Node.js</strong>, <strong>Express 5</strong> and <strong>EJS 5</strong>.
   <br />
-  Frontend V2 replaces the original minimal UI with a full editorial-magazine design system:
+  Frontend minimal UI with a full editorial-magazine design system:
   <br />
   warm ink-on-paper palette, Fraunces display type, dark mode, search, topics and dedicated post pages.
 </p>
@@ -20,8 +20,6 @@
 ## 🚀 Live Demo
 
 Check out : [Inkora Blog Application](https://inkora-blogs.vercel.app/)
-
-> The deployed demo reflects the V1 interface. Run the project locally to see Inkora V2.
 
 ---
 
