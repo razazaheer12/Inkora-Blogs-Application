@@ -17,7 +17,7 @@
 
 ## 🚀 Live Demo
 
-Check out the live demo: [Blog Web Application](https://blog-web-application-project.vercel.app/) 
+Check out : [Blog Application](https://post-blogspace.vercel.app/) 
 
 ---
 
