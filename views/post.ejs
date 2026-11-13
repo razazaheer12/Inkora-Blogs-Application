@@ -1,0 +1,97 @@
+<%- include("partials/header", { metaDescription: excerpt(post.content, 150) }) %>
+
+<article>
+  <header class="article-head">
+    <div class="shell article-head__inner reveal">
+      <p class="eyebrow">Entry No. <%= String(post.id).padStart(3, "0") %> &middot; The Inkora Journal</p>
+
+      <h1><%= post.title %></h1>
+
+      <div class="stack" style="--stack-gap:.9rem">
+        <span class="byline">
+          <span class="byline__avatar" aria-hidden="true">R</span>
+          Raza Zaheer
+        </span>
+
+        <div class="meta">
+          <time datetime="<%= post.createdAt %>"><%= formatDate(post.createdAt) %></time>
+          <span class="meta__dot"></span>
+          <span><%= readingTime(post.content) %> min read</span>
+          <span class="meta__dot"></span>
+          <span><%= post.content.trim().split(/\s+/).length %> words</span>
+          <% if (post.updatedAt !== post.createdAt) { %>
+            <span class="meta__dot"></span>
+            <span>revised <%= formatDate(post.updatedAt) %></span>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell">
+    <div class="article-body reveal" data-delay="1">
+      <% paragraphs(post.content).forEach(paragraph => { %>
+        <p><%= paragraph %></p>
+      <% }) %>
+    </div>
+
+    <footer class="article-foot">
+      <div class="article-actions">
+        <% if (post.tags.length) { %>
+          <div class="chip-row">
+            <% post.tags.forEach(tag => { %>
+              <a class="chip" href="/?tag=<%= encodeURIComponent(tag) %>">#<%= tag %></a>
+            <% }) %>
+          </div>
+        <% } %>
+
+        <span class="spacer"></span>
+
+        <a class="btn btn--ghost btn--sm" href="/">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12H5M11 6l-6 6 6 6" />
+          </svg>
+          Journal
+        </a>
+
+        <a class="btn btn--ghost btn--sm" href="/edit/<%= post.id %>">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 20h4l10.5-10.5a2.8 2.8 0 0 0-4-4L4 16v4z" />
+            <path d="M13.5 6.5l4 4" />
+          </svg>
+          Edit
+        </a>
+
+        <form
+          action="/delete/<%= post.id %>"
+          method="POST"
+          data-confirm="Delete “<%= post.title %>”? This cannot be undone."
+          style="display:inline"
+        >
+          <button class="btn btn--danger btn--sm" type="submit">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 7h16M9 7V4.8h6V7M6.5 7l1 13h9l1-13" />
+            </svg>
+            Delete
+          </button>
+        </form>
+      </div>
+
+      <% if (related.length) { %>
+        <div class="rule--ornament" aria-hidden="true"><span>&#10087;</span></div>
+        <p class="eyebrow" style="margin-bottom:1rem">Keep reading</p>
+        <div class="related">
+          <% related.forEach(item => { %>
+            <a class="related__card" href="/posts/<%= item.id %>">
+              <span class="meta"><%= formatDate(item.createdAt) %> &middot; <%= readingTime(item.content) %> min</span>
+              <h3><%= item.title %></h3>
+              <p class="meta"><%= excerpt(item.content, 90) %></p>
+            </a>
+          <% }) %>
+        </div>
+      <% } %>
+    </footer>
+  </div>
+</article>
+
+<%- include("partials/footer") %>

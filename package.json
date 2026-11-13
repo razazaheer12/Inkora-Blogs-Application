@@ -1,11 +1,12 @@
 {
-  "name": "project",
-  "version": "1.0.0",
-  "description": "Blog web application course Capstone Project",
+  "name": "inkora-blog",
+  "version": "2.0.0",
+  "description": "Inkora - an editorial local-first blog web application built with Node.js, Express and EJS",
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "node --watch index.js"
   },
   "author": "raza",
   "license": "ISC",

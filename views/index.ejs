@@ -1,28 +1,210 @@
 <%- include("partials/header") %>
 
-<div class="container">
-  <h1>My Thoughts 💭</h1>
+<%
+  const filtered = Boolean(query || activeTag);
+  const startIndex = (!filtered && posts.length > 1) ? 1 : 0;
+  const featured = (!filtered && posts.length > 0) ? posts[0] : null;
+  const latest = posts.length ? posts[0] : null;
+%>
 
-  <a href="/create" class="btn">+ New Post</a>
-
-  <% if (posts.length === 0) { %>
-    <p class="empty">No posts yet. Start writing ✍️</p>
-  <% } %>
-
-  <% posts.forEach(post => { %>
-    <div class="post">
-      <h2><%= post.title %></h2>
-      <p><%= post.content.substring(0, 150) %>...</p>
-
-      <div class="actions">
-        <a href="/edit/<%= post.id %>" class="btn">Edit</a>
-
-        <form action="/delete/<%= post.id %>" method="POST" onsubmit="return confirm('Delete this post?')" style="display:inline;">
-          <button class="btn">Delete</button>
-        </form>
-      </div>
+<section class="hero">
+  <div class="shell hero__grid">
+    <div class="reveal">
+      <p class="eyebrow">The Inkora Journal &middot; Est. 2026</p>
+      <h1 class="hero__title display-xl">
+        Notes on writing, design<br />
+        and building <span class="accent">small things</span> well.
+      </h1>
+      <p class="lede">
+        <%= site.tagline %> Essays published as they are finished &mdash; no feed
+        algorithm, no engagement metrics, just the work and the margin notes.
+      </p>
     </div>
-  <% }) %>
-</div>
+
+    <aside class="hero__aside reveal" data-delay="2">
+      <p class="eyebrow">Currently</p>
+      <p class="colophon" style="margin-top:.6rem">
+        <% if (latest) { %>
+          Last published <strong><%= formatDate(latest.createdAt) %></strong> &mdash;
+          <em><%= latest.title %></em>
+        <% } else { %>
+          Nothing published yet. The press is warmed up and waiting.
+        <% } %>
+      </p>
+
+      <div class="stat-row">
+        <div class="stat">
+          <div class="stat__value tnum"><%= totalPosts %></div>
+          <div class="stat__label">Posts</div>
+        </div>
+        <div class="stat">
+          <div class="stat__value tnum"><%= tags.length %></div>
+          <div class="stat__label">Topics</div>
+        </div>
+        <div class="stat">
+          <div class="stat__value tnum">
+            <%= posts.reduce((sum, post) => sum + readingTime(post.content), 0) %>
+          </div>
+          <div class="stat__label">Min read</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="section--tight">
+  <div class="shell">
+    <div class="toolbar">
+      <form class="search" action="/" method="GET" role="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="6.5" />
+          <path d="M16 16l4.5 4.5" />
+        </svg>
+        <input
+          type="search"
+          name="q"
+          value="<%= query %>"
+          placeholder="Search the journal…  ( / )"
+          aria-label="Search posts"
+          autocomplete="off"
+          data-search-input
+          data-reset-href="/"
+        />
+        <% if (activeTag) { %>
+          <input type="hidden" name="tag" value="<%= activeTag %>" />
+        <% } %>
+        <% if (query) { %>
+          <button class="search__clear" type="button" data-search-clear aria-label="Clear search">&times;</button>
+        <% } %>
+      </form>
+
+      <% if (tags.length) { %>
+        <div class="toolbar__tags">
+          <a class="chip <%= activeTag ? "" : "chip--active" %>" href="/" <%= activeTag ? "" : 'aria-pressed="true"' %>>
+            all<span class="chip__count"><%= totalPosts %></span>
+          </a>
+          <% tags.forEach(({ tag, count }) => { %>
+            <a
+              class="chip <%= activeTag === tag ? "chip--active" : "" %>"
+              href="/?tag=<%= encodeURIComponent(tag) %>"
+              <%= activeTag === tag ? 'aria-pressed="true"' : "" %>
+            >
+              <%= tag %><span class="chip__count"><%= count %></span>
+            </a>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="padding-top:0">
+  <div class="shell">
+    <div class="feed-header">
+      <h2 class="display-sm">
+        <% if (query && activeTag) { %>
+          Results for &ldquo;<%= query %>&rdquo; in <%= activeTag %>
+        <% } else if (query) { %>
+          Results for &ldquo;<%= query %>&rdquo;
+        <% } else if (activeTag) { %>
+          Filed under <%= activeTag %>
+        <% } else { %>
+          Latest entries
+        <% } %>
+      </h2>
+      <span class="feed-header__count">
+        <%= posts.length %> <%= posts.length === 1 ? "entry" : "entries" %>
+        <% if (filtered) { %>
+          &middot; <a class="link-quiet" href="/">clear filters</a>
+        <% } %>
+      </span>
+    </div>
+
+    <% if (posts.length === 0) { %>
+      <div class="empty reveal">
+        <svg class="empty__mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 10h26l10 10v34H14z" />
+          <path d="M40 10v10h10" />
+          <path d="M22 32h20M22 40h14" />
+        </svg>
+        <% if (filtered) { %>
+          <h2>Nothing matches that</h2>
+          <p>
+            No entry answers to
+            <%= query ? "“" + query + "”" : "" %>
+            <%= query && activeTag ? "under " + activeTag : "" %>
+            <%= !query && activeTag ? "the topic " + activeTag : "" %>.
+            Try a broader word, or browse everything that has been published.
+          </p>
+          <a class="btn btn--primary" href="/">Show all entries</a>
+        <% } else { %>
+          <h2>The journal is empty</h2>
+          <p>
+            Nothing has been published yet. Write the first entry &mdash; it is
+            allowed to be bad, that is what the edit button is for.
+          </p>
+          <a class="btn btn--primary" href="/create">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            Write the first post
+          </a>
+        <% } %>
+      </div>
+    <% } else { %>
+      <div class="feed">
+        <% if (featured) { %>
+          <article class="entry entry--featured reveal">
+            <div>
+              <span class="entry__kicker">Latest entry</span>
+              <h3 class="entry__title display-lg">
+                <a href="/posts/<%= featured.id %>"><%= featured.title %></a>
+              </h3>
+              <p class="entry__excerpt"><%= excerpt(featured.content, 240) %></p>
+              <div class="meta">
+                <time datetime="<%= featured.createdAt %>"><%= formatDate(featured.createdAt) %></time>
+                <span class="meta__dot"></span>
+                <span><%= readingTime(featured.content) %> min read</span>
+                <% featured.tags.forEach(tag => { %>
+                  <span class="meta__dot"></span>
+                  <a href="/?tag=<%= encodeURIComponent(tag) %>">#<%= tag %></a>
+                <% }) %>
+              </div>
+            </div>
+          </article>
+        <% } %>
+
+        <% posts.slice(startIndex).forEach((post, i) => { %>
+          <article class="entry reveal" data-delay="<%= Math.min(i + 1, 4) %>">
+            <div class="entry__index tnum"><%= String(i + 1).padStart(2, "0") %></div>
+
+            <div>
+              <h3 class="entry__title display-sm">
+                <a href="/posts/<%= post.id %>"><%= post.title %></a>
+              </h3>
+              <p class="entry__excerpt"><%= excerpt(post.content) %></p>
+              <div class="chip-row">
+                <% post.tags.forEach(tag => { %>
+                  <a class="chip" href="/?tag=<%= encodeURIComponent(tag) %>"><%= tag %></a>
+                <% }) %>
+              </div>
+            </div>
+
+            <div class="entry__side">
+              <span class="entry__date"><%= formatDate(post.createdAt) %></span>
+              <span class="meta"><%= readingTime(post.content) %> min</span>
+              <a class="btn btn--ghost btn--sm" href="/posts/<%= post.id %>">
+                Read
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </a>
+            </div>
+          </article>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+</section>
 
 <%- include("partials/footer") %>

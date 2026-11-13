@@ -1,0 +1,112 @@
+<%- include("partials/header") %>
+
+<section class="hero" style="padding-block:clamp(2.5rem,6vw,4rem)">
+  <div class="shell">
+    <div class="reveal" style="max-width:46rem">
+      <p class="eyebrow">About</p>
+      <h1 class="display-lg" style="margin-block:1rem 1.25rem">
+        A journal that lives entirely on <span class="accent" style="color:var(--accent);font-style:italic">your machine</span>.
+      </h1>
+      <p class="lede">
+        Inkora is a local-first personal blog: an Express server, a handful of EJS
+        templates, and one carefully set stylesheet. No database, no accounts, no
+        tracking pixels.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="shell about-grid">
+    <div class="prose reveal" data-delay="1">
+      <h2 class="display-sm" style="margin-bottom:1rem">Why it is built this way</h2>
+      <p>
+        Most writing tools ask you to manage something other than your writing.
+        Inkora deliberately asks for nothing. You start the server, the journal is
+        there, you close the terminal, and it is gone &mdash; which is an honest
+        way to build a demo and a useful constraint for a portfolio piece.
+      </p>
+      <p>
+        <strong>The whole application can be read in one sitting.</strong> That is
+        treated as a feature rather than a limitation. Every route lives in a
+        single <code>index.js</code>, every pixel is defined by CSS custom
+        properties at the top of <code>styles.css</code>, and the progressive
+        behaviour &mdash; theme preference, mobile navigation, reading progress
+        &mdash; is a few dozen lines of dependency-free JavaScript.
+      </p>
+
+      <h2 class="display-sm" style="margin-block:2.25rem 1rem">The editorial system</h2>
+      <p>
+        Type does the heavy lifting. <strong>Fraunces</strong> sets the display
+        headlines with its optical sizing and wonk axis turned up, so large sizes
+        get their high-contrast details. <strong>Newsreader</strong> carries the
+        article body at a 68-character measure with 1.78 line height, which is
+        where long-form prose stops being a wall. <strong>Inter</strong> handles
+        everything that is interface: navigation, metadata, buttons and form
+        labels.
+      </p>
+      <p>
+        The palette is warm ink on paper rather than pure black on pure white,
+        with a single oxblood accent used sparingly for links, kickers and the
+        drop cap. A faint paper grain sits over the whole page, and the dark
+        theme is a genuine re-token of the same system rather than an inverted
+        copy.
+      </p>
+
+      <h2 class="display-sm" style="margin-block:2.25rem 1rem">What you can do here</h2>
+      <p>
+        Publish an entry with a title, comma-separated topics and a body. Read it
+        on its own page with a drop cap, a reading-progress rule and related
+        entries underneath. Revise it, and the entry is stamped with the revision
+        date. Search across titles, bodies and topics, or filter the feed by a
+        single topic from the rail under the masthead.
+      </p>
+      <p style="margin-top:1.5rem">
+        <a class="btn btn--primary" href="/">
+          Read the journal
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+      </p>
+    </div>
+
+    <aside class="panel reveal" data-delay="2">
+      <p class="eyebrow" style="margin-bottom:1.25rem">By the numbers</p>
+
+      <div class="stat-row" style="margin-top:0">
+        <div class="stat">
+          <div class="stat__value tnum"><%= stats.posts %></div>
+          <div class="stat__label">Entries</div>
+        </div>
+        <div class="stat">
+          <div class="stat__value tnum"><%= stats.tags %></div>
+          <div class="stat__label">Topics</div>
+        </div>
+        <div class="stat">
+          <div class="stat__value tnum"><%= stats.words.toLocaleString("en-US") %></div>
+          <div class="stat__label">Words</div>
+        </div>
+      </div>
+
+      <hr class="rule" style="margin-block:1.75rem" />
+
+      <p class="eyebrow" style="margin-bottom:1rem">Colophon</p>
+      <dl class="spec-list">
+        <div><dt>Runtime</dt><dd>Node.js (ES modules)</dd></div>
+        <div><dt>Framework</dt><dd>Express 5</dd></div>
+        <div><dt>Templates</dt><dd>EJS 5</dd></div>
+        <div><dt>Body parsing</dt><dd>body-parser</dd></div>
+        <div><dt>Styling</dt><dd>Hand-written CSS, custom properties</dd></div>
+        <div><dt>Display type</dt><dd>Fraunces</dd></div>
+        <div><dt>Text type</dt><dd>Newsreader</dd></div>
+        <div><dt>Interface type</dt><dd>Inter</dd></div>
+        <div><dt>JavaScript</dt><dd>Vanilla, no dependencies</dd></div>
+        <div><dt>Storage</dt><dd>In-memory array</dd></div>
+        <div><dt>Build step</dt><dd>None</dd></div>
+      </dl>
+    </aside>
+  </div>
+</section>
+
+<%- include("partials/footer") %>

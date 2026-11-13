@@ -1,0 +1,31 @@
+<%- include("partials/header") %>
+
+<div class="shell">
+  <div class="empty reveal" style="padding-block:clamp(4rem,12vw,8rem)">
+    <svg class="empty__mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M10 20h44M10 32h30M10 44h20" />
+      <circle cx="48" cy="44" r="9" />
+      <path d="M54.5 50.5L60 56" />
+    </svg>
+
+    <p class="eyebrow">Error 404</p>
+    <h1 class="display-lg" style="margin-block:.75rem 1rem">This page is not on the shelf</h1>
+    <p>
+      <%= typeof message !== "undefined" && message
+        ? message
+        : "The page you were looking for is not on this shelf." %>
+    </p>
+
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center">
+      <a class="btn btn--primary" href="/">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5M11 6l-6 6 6 6" />
+        </svg>
+        Back to the journal
+      </a>
+      <a class="btn btn--ghost" href="/create">Write something instead</a>
+    </div>
+  </div>
+</div>
+
+<%- include("partials/footer") %>

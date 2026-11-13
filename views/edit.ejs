@@ -1,27 +1,89 @@
 <%- include("partials/header") %>
 
-<div class="container">
-  <h1>Edit Post</h1>
+<div class="shell">
+  <div class="editor">
+    <div class="editor__head reveal">
+      <p class="eyebrow">Revision &middot; Entry No. <%= String(post.id).padStart(3, "0") %></p>
+      <h1>Edit this entry</h1>
+      <p class="lede">
+        Originally published <%= formatDate(post.createdAt) %>. Saving stamps the
+        entry as revised &mdash; the craft lives in the second pass.
+      </p>
+    </div>
 
-  <form action="/edit/<%= post.id %>" method="POST">
-    <input 
-      type="text" 
-      name="title" 
-      value="<%= post.title %>" 
-      required 
-    />
+    <form action="/edit/<%= post.id %>" method="POST" class="reveal" data-delay="1">
+      <div class="field field--title">
+        <label class="field__label" for="title">
+          Title
+          <span class="field__hint">required</span>
+        </label>
+        <input
+          id="title"
+          type="text"
+          name="title"
+          value="<%= post.title %>"
+          required
+          maxlength="140"
+          autocomplete="off"
+        />
+      </div>
 
-    <textarea 
-      name="content" 
-      rows="6" 
-      required
-    ><%= post.content %></textarea>
+      <div class="field">
+        <label class="field__label" for="tags">
+          Topics
+          <span class="field__hint">comma separated &middot; up to 5</span>
+        </label>
+        <input
+          id="tags"
+          type="text"
+          name="tags"
+          value="<%= post.tags.join(", ") %>"
+          placeholder="writing, craft, design"
+          autocomplete="off"
+        />
+      </div>
 
-    <button type="submit" class="btn">Update</button>
-  </form>
+      <div class="field field--body">
+        <label class="field__label" for="content">
+          Body
+          <span class="counter" data-editor-counter>0 words &middot; about 1 min read</span>
+        </label>
+        <textarea
+          id="content"
+          name="content"
+          rows="14"
+          required
+          data-editor-body
+        ><%= post.content %></textarea>
+      </div>
 
-  <br>
-  <a href="/" class="btn">← Back</a>
+      <div class="editor__foot">
+        <button class="btn btn--accent" type="submit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 12.5l5 5L20 6.5" />
+          </svg>
+          Save revision
+        </button>
+        <a class="btn btn--ghost" href="/posts/<%= post.id %>">View entry</a>
+        <span class="spacer"></span>
+        <a class="link-quiet" href="/">Cancel</a>
+      </div>
+    </form>
+
+    <div class="panel reveal" data-delay="2" style="margin-top:3rem">
+      <p class="eyebrow" style="margin-bottom:.75rem">Danger zone</p>
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between">
+        <p class="meta">Deleting removes the entry from the journal immediately.</p>
+        <form
+          action="/delete/<%= post.id %>"
+          method="POST"
+          data-confirm="Delete “<%= post.title %>”? This cannot be undone."
+        >
+          <button class="btn btn--danger btn--sm" type="submit">Delete this entry</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 <%- include("partials/footer") %>

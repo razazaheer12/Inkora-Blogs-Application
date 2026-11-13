@@ -1,28 +1,85 @@
 <%- include("partials/header") %>
 
-<div class="container">
-  <h1>Create New Post</h1>
+<div class="shell">
+  <div class="editor">
+    <div class="editor__head reveal">
+      <p class="eyebrow">Compose</p>
+      <h1>Write a new entry</h1>
+      <p class="lede">
+        Set the type, say the thing, then cut a third of it. Blank lines between
+        paragraphs are preserved as paragraph breaks.
+      </p>
+    </div>
 
-  <form action="/create" method="POST">
-    <input 
-      type="text" 
-      name="title" 
-      placeholder="Enter post title..." 
-      required 
-    />
+    <div class="notice reveal" data-delay="1" style="margin-bottom:2rem">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 11v5.5M12 7.6v.2" />
+      </svg>
+      <span>
+        Inkora keeps every post in server memory. Restarting <code>node index.js</code>
+        clears the journal back to the three seeded essays.
+      </span>
+    </div>
 
-    <textarea 
-      name="content" 
-      rows="6" 
-      placeholder="Write your thoughts..." 
-      required
-    ></textarea>
+    <form action="/create" method="POST" class="reveal" data-delay="2">
+      <div class="field field--title">
+        <label class="field__label" for="title">
+          Title
+          <span class="field__hint">required</span>
+        </label>
+        <input
+          id="title"
+          type="text"
+          name="title"
+          placeholder="An honest, specific headline…"
+          required
+          maxlength="140"
+          autocomplete="off"
+        />
+      </div>
 
-    <button type="submit" class="btn">Publish</button>
-  </form>
+      <div class="field">
+        <label class="field__label" for="tags">
+          Topics
+          <span class="field__hint">comma separated &middot; up to 5</span>
+        </label>
+        <input
+          id="tags"
+          type="text"
+          name="tags"
+          placeholder="writing, craft, design"
+          autocomplete="off"
+        />
+      </div>
 
-  <br>
-  <a href="/" class="btn">← Back</a>
+      <div class="field field--body">
+        <label class="field__label" for="content">
+          Body
+          <span class="counter" data-editor-counter>0 words &middot; about 1 min read</span>
+        </label>
+        <textarea
+          id="content"
+          name="content"
+          rows="14"
+          placeholder="Start in the middle of the thought…"
+          required
+          data-editor-body
+        ></textarea>
+      </div>
+
+      <div class="editor__foot">
+        <button class="btn btn--accent" type="submit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 12l16-7-7 16-2.5-6.5L4 12z" />
+          </svg>
+          Publish entry
+        </button>
+        <span class="spacer"></span>
+        <a class="link-quiet" href="/">Cancel and return to the journal</a>
+      </div>
+    </form>
+  </div>
 </div>
 
 <%- include("partials/footer") %>
